@@ -1,0 +1,61 @@
+# Development tools
+android-platform
+android-sdk
+android-sdk-cmdline-tools-latest
+arduino-ide-bin
+eslint
+github-cli
+go
+jq
+nvm
+pnpm
+vscodium-bin
+yarn
+zed
+
+# Containers
+buildah
+docker
+docker-buildx
+docker-compose
+helm
+k9s
+minikube
+podman
+
+# Databases
+dbeaver
+heidisql
+mariadb
+mongodb36-bin
+postgresql
+postgresql-libs
+
+# Multi-media
+audacious
+audacity
+blender
+freecad
+mpv
+obs-studio
+superslicer-bin
+
+# Misc
+etcher-bin
+mullvad-vpn-bin
+obsidian-appimage
+qbittorrent
+rpi-imager
+slack-desktop
+unifi
+
+# System Utils
+bashtop-git
+debtap
+nmap
+nfs-utils
+traceroute
+winetricks-git
+yay
+vim
+zsh

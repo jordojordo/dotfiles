@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+#
+# Run all dotfiles installers.
+
+set -e
+
+cd "$(dirname "$0")"/..
+
+# Function to load package list from a file
+load_packages() {
+  local pkg_file="./packages.list"
+  local pkgs=()
+  if [ -f "$pkg_file" ]; then
+    while IFS= read -r line || [ -n "$line" ]; do
+      # Skip empty lines and comments
+      [[ -z "$line" || "$line" =~ ^# ]] && continue
+      pkgs+=("$line")
+    done < "$pkg_file"
+  else
+    echo "Package file $pkg_file not found."
+    exit 1
+  fi
+  echo "${pkgs[@]}"
+}
+
+packages=( $(load_packages) )
+
+if [ "$(uname -s)" == "Darwin" ]; then
+  echo "› Running Homebrew installer"
+  brew bundle
+elif [ -f /etc/arch-release ]; then
+  echo "› Running Arch Linux dependency installer"
+  if command -v yay >/dev/null 2>&1; then
+    echo "› Installing packages with yay"
+    yay -S --noconfirm "${packages[@]}"
+  else
+    echo "› Installing packages with pacman"
+    sudo pacman -Syu --noconfirm "${packages[@]}"
+  fi
+else
+  echo "› No supported package manager found. Exiting."
+  exit 1
+fi
+
+# Find and run additional install scripts
+find . -name install.sh | while read installer; do
+  sh -c "${installer}"
+done
