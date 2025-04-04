@@ -31,9 +31,13 @@ setopt HIST_REDUCE_BLANKS
 #   like: git comm-[tab]
 setopt complete_aliases
 
-bindkey '^[^[[D' backward-word
-bindkey '^[^[[C' forward-word
-bindkey '^[[5D' beginning-of-line
-bindkey '^[[5C' end-of-line
+# Bind Home and End keys to move to beginning/end of line
+bindkey "\e[H" beginning-of-line
+bindkey "\e[F" end-of-line
+
+# Bind Ctrl+Left and Ctrl+Right to move backward/forward one word
+bindkey "\e[1;5D" backward-word
+bindkey "\e[1;5C" forward-word
+
 bindkey '^[[3~' delete-char
 bindkey '^?' backward-delete-char

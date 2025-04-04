@@ -56,9 +56,13 @@ bashtop-git
 debtap
 nmap
 nfs-utils
-openssh
 traceroute
 winetricks-git
 yay
 vim
 zsh
+
+# Core
+openssh
+vulkan-radeon
+vulkan-mesa-layers
