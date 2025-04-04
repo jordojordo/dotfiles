@@ -9,6 +9,8 @@ go
 jq
 nvm
 pnpm
+ruby
+rust
 vscodium-bin
 yarn
 zed
@@ -54,6 +56,7 @@ bashtop-git
 debtap
 nmap
 nfs-utils
+openssh
 traceroute
 winetricks-git
 yay
