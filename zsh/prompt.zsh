@@ -51,7 +51,15 @@ need_push () {
 }
 
 directory_name() {
-  echo "%{$fg_bold[cyan]%}%1/%\/%{$reset_color%}"
+  local dir="$PWD"
+  if [[ "$dir" == "$HOME"* ]]; then
+    if [[ "$dir" == "$HOME" ]]; then
+      dir="~"
+    else
+      dir="~${dir#$HOME}"
+    fi
+  fi
+  echo "%{$fg_bold[cyan]%}$dir%{$reset_color%}"
 }
 
 battery_status() {
