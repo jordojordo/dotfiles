@@ -7,3 +7,6 @@ case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
+
+# Stop corepack from adding the packageManager to every package.json
+export COREPACK_ENABLE_AUTO_PIN=0

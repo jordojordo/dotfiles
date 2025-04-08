@@ -78,7 +78,7 @@ connector_icon=$'\u2570\U2500'  # ╰─
 
 # Line 1: Displays directory (and you can add Git info, battery status, etc.)
 # Line 2: Uses the connector icon then the prompt.
-export PROMPT=$'\n%{$fg[cyan]%}╭─ %{$fg_bold[cyan]%}$(directory_name)%{$reset_color%}\n%{$fg[cyan]%}'"$connector_icon"' %{$reset_color%}'
+export PROMPT=$'\n%{$fg[cyan]%}╭─ %{$fg_bold[cyan]%}$(directory_name) $(git_dirty)$(need_push)%{$reset_color%}\n%{$fg[cyan]%}'"$connector_icon"' %{$reset_color%}'
 
 set_prompt () {
   export RPROMPT="%{$fg_bold[cyan]%}%{$reset_color%}"
