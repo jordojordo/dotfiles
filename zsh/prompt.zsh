@@ -54,7 +54,7 @@ directory_name() {
   local dir="$PWD"
   if [[ "$dir" == "$HOME"* ]]; then
     if [[ "$dir" == "$HOME" ]]; then
-      dir="~"
+      dir="${dir}"
     else
       dir="~${dir#$HOME}"
     fi
