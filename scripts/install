@@ -3,46 +3,59 @@
 # Run all dotfiles installers.
 
 set -e
-
 cd "$(dirname "$0")"/..
 
-# Function to load package list from a file
-load_packages() {
-  local pkg_file="./packages.list"
-  local pkgs=()
-  if [ -f "$pkg_file" ]; then
-    while IFS= read -r line || [ -n "$line" ]; do
-      # Skip empty lines and comments
-      [[ -z "$line" || "$line" =~ ^# ]] && continue
-      pkgs+=("$line")
-    done < "$pkg_file"
+# pick the right package‐list
+if [ -f packages.arch.list ] && [ -f packages.fedora.list ]; then
+  . /etc/os-release
+  if [ "$ID" = "fedora" ]; then
+    pkg_file="./packages.fedora.list"
   else
-    echo "Package file $pkg_file not found."
-    exit 1
-  fi
-  echo "${pkgs[@]}"
-}
-
-packages=( $(load_packages) )
-
-if [ "$(uname -s)" == "Darwin" ]; then
-  echo "› Running Homebrew installer"
-  brew bundle
-elif [ -f /etc/arch-release ]; then
-  echo "› Running Arch Linux dependency installer"
-  if command -v yay >/dev/null 2>&1; then
-    echo "› Installing packages with yay"
-    yay -S --noconfirm "${packages[@]}"
-  else
-    echo "› Installing packages with pacman"
-    sudo pacman -Syu --noconfirm "${packages[@]}"
+    pkg_file="./packages.arch.list"
   fi
 else
-  echo "› No supported package manager found. Exiting."
+  echo "Missing packages.arch.list or packages.fedora.list"
   exit 1
 fi
 
-# Find and run additional install scripts
-find . -name install.sh | while read installer; do
+# load packages
+packages=()
+while IFS= read -r line || [ -n "$line" ]; do
+  [[ -z "$line" || "$line" =~ ^# ]] && continue
+  packages+=("$line")
+done < "$pkg_file"
+
+# dispatch installer
+case "$(uname -s)" in
+  Darwin)
+    echo "› Running Homebrew installer"
+    brew bundle
+    ;;
+  Linux)
+    if [ -f /etc/arch-release ]; then
+      echo "› Arch Linux detected"
+      if command -v yay &>/dev/null; then
+        echo "› Installing with yay"
+        yay -S --noconfirm "${packages[@]}"
+      else
+        echo "› Installing with pacman"
+        sudo pacman -Syu --noconfirm "${packages[@]}"
+      fi
+    elif grep -q '^ID=fedora' /etc/os-release; then
+      echo "› Fedora detected"
+      sudo dnf install -y "${packages[@]}"
+    else
+      echo "› No supported package manager found. Exiting."
+      exit 1
+    fi
+    ;;
+  *)
+    echo "› Unsupported OS. Exiting."
+    exit 1
+    ;;
+esac
+
+# any extra installers
+find . -name install.sh | while read -r installer; do
   sh -c "${installer}"
 done

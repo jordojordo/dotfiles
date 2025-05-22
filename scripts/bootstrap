@@ -149,13 +149,24 @@ install_dependencies () {
   fi
 }
 
-if [ "$(uname -s)" == "Darwin" ]; then
-  info "installing dependencies for macOS"
-  install_dependencies
-elif [ -f /etc/arch-release ]; then
-  info "installing dependencies for Arch Linux"
-  install_dependencies
-fi
+OS="$(. /etc/os-release && echo "$ID")"
+case "$OS" in
+  darwin)
+    info "installing dependencies for macOS"
+    install_dependencies
+    ;;
+  arch)
+    info "installing dependencies for Arch Linux"
+    install_dependencies
+    ;;
+  fedora)
+    info "installing dependencies for Fedora"
+    install_dependencies
+    ;;
+  *)
+    user "No supported OS detected; skipping dependency installation."
+    ;;
+esac
 
 echo ''
 echo '  All installed!'

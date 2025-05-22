@@ -11,10 +11,11 @@ This repository houses all my system configurations, organized into topic areas 
 Whether you're on macOS or an Arch-based system, the installation scripts automatically handle package installation.
 
 - **macOS**: Uses a `Brewfile` to manage packages via Homebrew.
-- **Arch Linux and Derivatives**: Uses a dedicated `packages.list` file, installing packages with either `yay` (if available) or `pacman`.
+- **Arch Linux and Derivatives**: Uses a dedicated `packages.arch.list` file, installing packages with either `yay` (if available) or `pacman`.
+- **Fedora**: Uses `dnf` to install packages listed in `packages.fedora.list`.
 
 **Manageable Package List**:
-All desired packages are listed in a dedicated `packages.list` file, making updates and customization straightforward.
+All desired packages are listed in a dedicated `packages.*.list` file, making updates and customization straightforward.
 
 ## Directory Structure
 

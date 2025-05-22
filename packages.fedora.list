@@ -1,0 +1,31 @@
+# Fedora packages
+gh
+go
+jq
+nodejs
+npm
+pnpm
+ruby
+rust
+yarn
+
+# Containers
+buildah
+docker
+docker-compose
+podman
+
+# Multimedia
+audacious
+mpv
+obs-studio
+
+# Misc
+qbittorrent
+
+# System Utils
+nmap
+nfs-utils
+traceroute
+vim
+zsh
