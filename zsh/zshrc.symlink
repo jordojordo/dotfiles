@@ -55,3 +55,5 @@ export NVM_DIR="$HOME/.nvm"
 
 # Add zed to path
 export PATH="$HOME/.local/zed.app/bin:$PATH"
+
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"

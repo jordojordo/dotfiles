@@ -6,7 +6,6 @@ nodejs
 npm
 pnpm
 rust
-yarn
 
 # Containers
 buildah
