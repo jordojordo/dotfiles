@@ -61,7 +61,9 @@ if [ "$(uname -s)" = "Darwin" ]; then
   echo "› brew upgrade"
   brew upgrade
 elif [ -f /etc/arch-release ]; then
-  echo "› Detected Arch Linux. Skipping macOS-specific steps."
+  echo "› Arch detected. Skipping macOS-specific steps."
+elif grep -q '^ID=fedora' /etc/os-release; then
+  echo "› Fedora detected. Skipping macOS-specific steps"
 fi
 
 # Install software
