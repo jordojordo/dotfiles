@@ -1,2 +1,4 @@
+zsh/zshrc.local.symlink
 git/gitconfig.local.symlink
 Brewfile.lock.json
+bin/kui

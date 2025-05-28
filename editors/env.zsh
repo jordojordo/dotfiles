@@ -1,1 +1,1 @@
-export EDITOR='codium'
+export EDITOR='zed'

@@ -10,4 +10,4 @@ alias pn="pnpm"
 alias pni="pnpm install"
 
 # zed
-alias z="zeditor"
+alias z="zed"
