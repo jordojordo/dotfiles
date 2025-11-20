@@ -31,6 +31,12 @@ setopt HIST_REDUCE_BLANKS
 #   like: git comm-[tab]
 setopt complete_aliases
 
+# zsh uses the shell variable $WORDCHARS to decide what counts as “in a word.”
+# Remove slash
+WORDCHARS=${WORDCHARS//\/}
+# Remove hyphen
+WORDCHARS=${WORDCHARS//-}
+
 # Bind Home and End keys to move to beginning/end of line
 bindkey "\e[H" beginning-of-line
 bindkey "\e[F" end-of-line

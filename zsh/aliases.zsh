@@ -11,3 +11,6 @@ alias pni="pnpm install"
 
 # zed
 alias z="zed"
+
+# zoom x11
+alias zoom-x11='GDK_BACKEND=x11 zoom'
