@@ -1,0 +1,107 @@
+#!/bin/bash
+
+# Function to show usage
+show_usage() {
+    echo "Usage: $0 <packages-file>"
+    echo ""
+    echo "Description:"
+    echo "  Updates packages using 'pnpm up -r' for each package listed in the input file"
+    echo ""
+    echo "Arguments:"
+    echo "  packages-file    Path to a text file containing package names (one per line)"
+    echo ""
+    echo "File format:"
+    echo "  Each line should contain one package name"
+    echo "  Empty lines and lines starting with # are ignored"
+    echo ""
+    echo "Example:"
+    echo "  $0 packages.txt"
+}
+
+# Check if argument is provided
+if [ $# -ne 1 ]; then
+    echo "Error: Missing required argument"
+    echo ""
+    show_usage
+    exit 1
+fi
+
+packages_file="$1"
+
+# Check if file exists
+if [ ! -f "$packages_file" ]; then
+    echo "Error: File '$packages_file' does not exist"
+    exit 1
+fi
+
+# Check if file is readable
+if [ ! -r "$packages_file" ]; then
+    echo "Error: File '$packages_file' is not readable"
+    exit 1
+fi
+
+# Read packages from file into array, skipping empty lines and comments
+packages=()
+while IFS= read -r line || [ -n "$line" ]; do
+    # Skip empty lines and comments
+    if [[ -n "$line" && ! "$line" =~ ^[[:space:]]*# ]]; then
+        # Trim whitespace
+        line=$(echo "$line" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+        if [ -n "$line" ]; then
+            packages+=("$line")
+        fi
+    fi
+done < "$packages_file"
+
+# Check if any packages are found
+if [ ${#packages[@]} -eq 0 ]; then
+    echo "Error: No packages found in '$packages_file'"
+    echo "Make sure the file contains package names (one per line)"
+    exit 1
+fi
+
+# Function to update a single package
+update_package() {
+    local package="$1"
+    echo "Updating package: $package"
+
+    if pnpm up -r "$package"; then
+        echo "✅ Successfully updated: $package"
+    else
+        echo "❌ Failed to update: $package"
+        return 1
+    fi
+    echo ""
+}
+
+# Main execution
+echo "Starting package updates from file: $packages_file"
+echo "Total packages to update: ${#packages[@]}"
+echo ""
+
+failed_packages=()
+
+# Loop through all packages and update them
+for package in "${packages[@]}"; do
+    if ! update_package "$package"; then
+        failed_packages+=("$package")
+    fi
+done
+
+# Summary
+echo "=== UPDATE SUMMARY ==="
+echo "Packages file: $packages_file"
+echo "Total packages processed: ${#packages[@]}"
+echo "Failed updates: ${#failed_packages[@]}"
+
+if [ ${#failed_packages[@]} -gt 0 ]; then
+    echo ""
+    echo "Failed packages:"
+    for failed in "${failed_packages[@]}"; do
+        echo "  - $failed"
+    done
+    exit 1
+else
+    echo "All packages updated successfully"
+    exit 0
+fi

@@ -1,0 +1,71 @@
+#!/bin/bash
+#
+# Enhanced grep utility ignoring common build directories and files
+# Usage: where <search_term> [directory]
+
+set -euo pipefail
+
+# Help function
+show_help() {
+    cat << EOF
+Usage: $(basename "$0") <search_term> [directory]
+
+Enhanced grep that ignores common build directories and file types.
+
+Arguments:
+    search_term    The text to search for
+    directory      Directory to search in (default: current directory)
+
+Examples:
+    $(basename "$0") "function"
+    $(basename "$0") "TODO" src/
+    $(basename "$0") "analytics-query-provider" ~/Documents
+
+EOF
+}
+
+# Check for help flag
+if [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
+    show_help
+    exit 0
+fi
+
+# Check if search term is provided
+if [[ $# -eq 0 ]]; then
+    echo "Error: Search term required"
+    show_help
+    exit 1
+fi
+
+SEARCH_TERM="$1"
+SEARCH_DIR="${2:-.}"
+
+# Expand tilde in directory path
+SEARCH_DIR="${SEARCH_DIR/#\~/$HOME}"
+
+# Verify directory exists
+if [[ ! -d "$SEARCH_DIR" ]]; then
+    echo "Error: Directory '$SEARCH_DIR' does not exist"
+    exit 1
+fi
+
+# Debug output (remove this line once working)
+echo "Searching for '$SEARCH_TERM' in '$SEARCH_DIR'"
+
+# Execute grep with exclusions
+grep -r "$SEARCH_TERM" "$SEARCH_DIR" \
+    --exclude-dir=node_modules \
+    --exclude-dir=dist \
+    --exclude-dir=build \
+    --exclude-dir=.nuxt \
+    --exclude-dir=.next \
+    --exclude-dir=coverage \
+    --exclude-dir=.git \
+    --exclude='*.js.map' \
+    --exclude='*.min.js' \
+    --exclude='*.css.map' \
+    --exclude='*.min.css' \
+    --exclude='*.lock' \
+    --exclude='package-lock.json' \
+    --exclude='yarn.lock' \
+    --color=auto

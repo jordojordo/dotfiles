@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+#
+# rm-nm
+#
+# Recursively delete all node_modules directories under a given directory,
+# but skip any .local directories.
+#
+# Usage:
+#   rm-nm [target_directory]
+#
+# If no target_directory is provided, the current directory (.) is used.
+
+set -euo pipefail
+
+# Directory to clean (default: current directory)
+TARGET_DIR="${1:-.}"
+
+# Verify it exists
+if [[ ! -d "$TARGET_DIR" ]]; then
+  echo "Error: '$TARGET_DIR' is not a directory."
+  exit 1
+fi
+
+echo "Searching for node_modules directories under '$TARGET_DIR' (skipping .local)..."
+
+# Find and delete all node_modules directories, pruning any .local dirs first
+find "$TARGET_DIR" \
+  \( -type d -name '.local' -prune \) -o \
+  \( -type d -name 'node_modules' -prune -print -exec rm -rf '{}' + \)
+
+echo "All node_modules directories have been removed (outside of .local)."
