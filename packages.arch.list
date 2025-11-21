@@ -1,7 +1,4 @@
 # Development tools
-android-platform
-android-sdk
-android-sdk-cmdline-tools-latest
 arduino-ide-bin
 eslint
 github-cli
@@ -26,12 +23,12 @@ minikube
 podman
 
 # Databases
-dbeaver
-heidisql
-mariadb
-mongodb36-bin
-postgresql
-postgresql-libs
+#dbeaver
+#heidisql
+#mariadb
+#mongodb36-bin
+#postgresql
+#postgresql-libs
 
 # Multi-media
 audacious
@@ -48,8 +45,8 @@ mullvad-vpn-bin
 obsidian-appimage
 qbittorrent
 rpi-imager
-slack-desktop
-unifi
+#slack-desktop
+#unifi
 
 # System Utils
 git-secrets
