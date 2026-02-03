@@ -1,5 +1,38 @@
+# Local config files
 zsh/zshrc.local.zsh
 git/gitconfig.local.symlink
 Brewfile.lock.json
 bin/kui
 bin/kpub
+
+# Environment files
+.env
+.env.*
+*.env
+.envrc
+
+# Credential files
+.npmrc
+.yarnrc
+.docker/config.json
+
+# Key files
+*.key
+*.pem
+*.p12
+*.pkcs12
+id_rsa
+id_ed25519
+*.pub
+
+# Secret directories
+secrets/
+private/
+credentials/
+
+# Local config patterns
+*.local
+*.local.*
+
+# git-secrets baseline
+.secrets.baseline
