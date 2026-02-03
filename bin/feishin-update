@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# Updates Feishin to the latest release
+
+APPIMAGE_PATH="/opt/feishin/Feishin-linux-x86_64.AppImage"
+REPO="jeffvli/feishin"
+
+# Get the latest release version from GitHub API
+echo "Checking for latest Feishin release..."
+latest_version=$(curl -s "https://api.github.com/repos/$REPO/releases/latest" | grep '"tag_name"' | sed -E 's/.*"([^"]+)".*/\1/')
+
+if [ -z "$latest_version" ]; then
+    echo "Error: Could not fetch latest version"
+    exit 1
+fi
+
+echo "Latest version: $latest_version"
+
+# Download the AppImage
+download_url="https://github.com/$REPO/releases/download/$latest_version/Feishin-linux-x86_64.AppImage"
+echo "Downloading from: $download_url"
+
+sudo curl -L -o "$APPIMAGE_PATH" "$download_url"
+
+if [ $? -ne 0 ]; then
+    echo "Error: Download failed"
+    exit 1
+fi
+
+sudo chmod +x "$APPIMAGE_PATH"
+
+echo "Feishin updated to $latest_version"
