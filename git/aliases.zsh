@@ -22,3 +22,5 @@ alias gb='git branch'
 alias gs='git status -sb' # upgrade your git if -sb breaks for you. it's fun.
 alias gac='git add -A && git commit -m'
 alias ge='git-edit-new'
+alias gmain='git checkout main && git fetch && git pull'
+alias gmaster='git checkout master && git fetch && git pull'
