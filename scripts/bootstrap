@@ -49,6 +49,30 @@ setup_gitconfig () {
   fi
 }
 
+setup_git_hooks () {
+  if command -v git-secrets &>/dev/null; then
+    info 'setting up git hooks'
+
+    # Use tracked hooks directory
+    git config core.hooksPath "$DOTFILES_ROOT/git-hooks"
+
+    # Register AWS patterns
+    git secrets --register-aws 2>/dev/null || true
+
+    # Load custom patterns from config file
+    if [ -f "$DOTFILES_ROOT/git-hooks/secrets.patterns" ]; then
+      while IFS= read -r pattern || [ -n "$pattern" ]; do
+        [[ -z "$pattern" || "$pattern" =~ ^# ]] && continue
+        git secrets --add "$pattern" 2>/dev/null || true
+      done < "$DOTFILES_ROOT/git-hooks/secrets.patterns"
+    fi
+
+    success 'git hooks configured'
+  else
+    info 'git-secrets not installed, skipping hook setup'
+  fi
+}
+
 
 link_file () {
   local src=$1 dst=$2
@@ -139,6 +163,7 @@ install_dotfiles () {
 
 setup_gitconfig
 install_dotfiles
+setup_git_hooks
 
 install_dependencies () {
   if source bin/dot | while read -r data; do info "$data"; done

@@ -52,6 +52,7 @@ slack-desktop
 unifi
 
 # System Utils
+git-secrets
 bashtop-git
 debtap
 nmap
