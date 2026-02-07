@@ -53,6 +53,7 @@ unifi
 
 # System Utils
 git-secrets
+python-pyinotify
 bashtop-git
 debtap
 nmap

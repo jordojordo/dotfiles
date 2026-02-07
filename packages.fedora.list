@@ -23,6 +23,7 @@ qbittorrent
 
 # System Utils
 git-secrets
+python3-inotify
 nmap
 nfs-utils
 traceroute

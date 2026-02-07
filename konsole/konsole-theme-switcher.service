@@ -1,0 +1,12 @@
+[Unit]
+Description=Konsole Theme Switcher - follows KDE color scheme
+After=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 %h/.local/bin/konsole-theme-switcher.py
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target
